@@ -10,7 +10,7 @@
 int closefiles(char *hue, char *intensity, char *saturation,
 	       int fd_output[3], DCELL * rowbuffer[3])
 {
-    unsigned int property;  // color space properties: hue, intensity, saturation
+    unsigned int property;  // color properties: hue, intensity, saturation
     struct Colors colors;
     struct FPRange range;
     struct History history;
@@ -18,8 +18,8 @@ int closefiles(char *hue, char *intensity, char *saturation,
     const char *mapset;
 
     for (property = 0; property < 3; property++) {
-        Rast_close(fd_output[i]);
-        G_free(rowbuffer[i]);
+        Rast_close(fd_output[property]);
+        G_free(rowbuffer[property]);
     }
 
     mapset = G_mapset();
