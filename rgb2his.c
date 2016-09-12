@@ -86,10 +86,6 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
         {
             saturation = 0.0;
             hue = -1.0; // undefined hue, set to -1.0
-
-            rowbuffer[0][column] = hue;
-            rowbuffer[1][column] = intensity;
-            rowbuffer[2][column] = saturation;
         }
 
         /*  else chromatic */
@@ -111,18 +107,24 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
             /* resulting color between yelmin and magenta */
 
             if (red == max)
+            {
                 hue = blue - green;
-
+                G_debug(2, "Hue (blue - green): %f", hue);
+            }
             /* resulting color between cyan and yelmin */
 
             else if (green == max)
+            {
                 hue = 2 + red - blue;
-
+                G_debug(2, "Hue (red - blue): %f", hue);
+            }
             /* resulting color between magenta and cyan */
 
             else if (blue == max)
+            {
                 hue = 4 + green - red;
-
+                G_debug(2, "Hue (green - red): %f", hue);
+            }
             /* convert to degrees */
 
             hue *= 60.0;
@@ -132,11 +134,27 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
             if (hue < 0.0)
                 hue += 360.0;
 
-            /* HIS output values */
 
-            rowbuffer[0][column] = hue;
-            rowbuffer[1][column] = intensity;
-            rowbuffer[2][column] = saturation;
         }
+
+        G_debug(2, "Minimum and Maximum levels among r, g, b: [%f, %f]", min, max);
+        G_debug(2, "HIS: %f, %f, %f", hue, intensity, saturation);
+
+        /* HIS output values */
+
+        /* set hue = -1.0 to NULL */
+
+        if (hue == -1.0)
+            Rast_set_d_null_value(&rowbuffer[0][column], 1);
+
+        else
+            rowbuffer[0][column] = (FCELL)hue;
+
+        rowbuffer[1][column] = (FCELL)intensity;
+        rowbuffer[2][column] = (FCELL)saturation;
+
+        /* for debugging purposes */
+        G_debug(3, "Output rowbuffers 0, 1, 2: %f, %f, %f\n",
+                rowbuffer[0][column], rowbuffer[1][column], rowbuffer[2][column]);
     }
 }
