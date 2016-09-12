@@ -1,15 +1,27 @@
 <h2>DESCRIPTION</h2>
 
-<em>i.rgb.his</em> is an image processing program that
-processes three input raster map layers as red, green, and
-blue components and produces three output raster map layers
-representing the hue, intensity, and saturation of the
-data.  The output raster map layers are created by a
-standard red-green-blue (rgb) to hue-intensity-saturation
-(his) color transformation.  Each output raster map layer
-is given a linear gray scale color table.  The current
-geographic region definition and mask settings are
-respected.
+<p><em>i.rgb.his</em> is an image processing program that processes three input
+images as red, green, and blue components and produces three output images
+representing the hue, intensity, and saturation color properties.</p>
+
+<p>The output images base upon a standard red-green-blue (rgb) to
+hue-intensity-saturation (his) color space transformation.  Hue ranges in
+degrees [0, 360] while intensity and saturation range in [0, 1].</p>
+
+<h2>NOTES</h2>
+
+<p>The module supports various bits per image (as in bits per color channel,
+bitness ranging in [2,16]).</p>
+
+<p>It is possible to process three bands with <em>i.rgb.his</em> and recover the
+original bands, nearly identical, with <em>i.his.rgb</em>.
+
+Due to rounding, minor loss of precision is expected. Cell values will be
+reproduced exactly after transformation in both directions, within plus or
+minus 1.</p>
+
+<p>Each output raster map layer is given a linear gray scale color table.  The
+current geographic region definition and mask settings are respected.</p>
 
 <h2>SEE ALSO</h2>
 
@@ -17,10 +29,7 @@ respected.
 
 <h2>AUTHOR</h2>
 
-David Satnik, GIS Laboratory, 
-Central Washington University, 
+David Satnik, GIS Laboratory,  Central Washington University,
 <br>
-with acknowledgements to Ali Vali, Space Research
-Center, for the core routine. 
-
-<p><i>Last changed: $Date: 2011-11-08 23:24:20 +0200 (Tue, 08 Nov 2011) $</i>
+with acknowledgements to Ali Vali, Univ. of Texas, Space Research Center, for the core routine.
+Nikos Alexandris, support for user defined bits per image
