@@ -110,7 +110,7 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
 
             /* resulting color between yelmin and magenta */
 
-            if (red = max)
+            if (red == max)
                 hue = blue - green;
 
             /* resulting color between cyan and yelmin */
