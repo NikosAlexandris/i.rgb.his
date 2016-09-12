@@ -24,9 +24,12 @@ NOTE:       For GRASS one row from each cell map is passed in and each cell in
 void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
 {
     int column;     // column counter
-    double red;     // red input band
-    double green;   // green input band
-    double blue;    // blue input output
+    double scaled_red;     // red input band, to be scaled to [0,1]
+    double scaled_green;   // green input band, likewise
+    double scaled_blue;    // blue input output, likewise
+    double red;     // red value used for computing hue
+    double green;   // green value, likewise
+    double blue;    // blue value, likewise
     double min;     // minimum among red, green, blue
     double max;     // maximum among red, green, blue
     double chroma;  // maximum - minimum
@@ -48,32 +51,32 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
 
         /* scale red, green, blue to [0.0,1.0] */
 
-        red = rowbuffer[0][column];
-        red /= max_colors;
+        scaled_red = rowbuffer[0][column];
+        scaled_red /= max_colors;
 
-        green = rowbuffer[1][column];
-        green /= max_colors;
+        scaled_green = rowbuffer[1][column];
+        scaled_green /= max_colors;
 
-        blue = rowbuffer[2][column];
-        blue /= max_colors;
+        scaled_blue = rowbuffer[2][column];
+        scaled_blue /= max_colors;
 
         /* max of {r,g,b} */
 
-        max = red;
-        if (green > max)
-            max = green;
+        max = scaled_red;
+        if (scaled_green > max)
+            max = scaled_green;
 
-        if (blue > max)
-            max = blue;
+        if (scaled_blue > max)
+            max = scaled_blue;
 
         /* min of {r,g,b} */
 
-        min = red;
-        if (green < min)
-            min = green;
+        min = scaled_red;
+        if (scaled_green < min)
+            min = scaled_green;
 
-        if (blue < min)
-            min = blue;
+        if (scaled_blue < min)
+            min = scaled_blue;
 
         /* chroma and intensity */
 
@@ -93,34 +96,41 @@ void rgb2his(DCELL * rowbuffer[3], unsigned int columns, double max_colors)
         else if (chroma != 0.0) {
 
             if (intensity <= 0.5)
+            {
                 saturation = chroma / (max + min);
+                G_debug(2, "Saturation (for I <= 0.5): %f", saturation);
+            }
 
             else if (intensity > 0.5)
-                saturation = chroma / (2 - chroma);
+            {
+                saturation = chroma / (2 - max - min);
+                G_debug(2, "Saturation (for I > 0.5): %f", saturation);
+            }
 
             /* set red, green, blue for computing hue */
 
-            red = (max - red) / chroma;
-            green = (max - green) / chroma;
-            blue = (max - blue) / chroma;
+            red = (max - scaled_red) / chroma;
+            green = (max - scaled_green) / chroma;
+            blue = (max - scaled_blue) / chroma;
 
             /* resulting color between yelmin and magenta */
 
-            if (red == max)
+            if (scaled_red == max)
             {
                 hue = blue - green;
                 G_debug(2, "Hue (blue - green): %f", hue);
             }
+
             /* resulting color between cyan and yelmin */
 
-            else if (green == max)
+            else if (scaled_green == max)
             {
                 hue = 2 + red - blue;
                 G_debug(2, "Hue (red - blue): %f", hue);
             }
             /* resulting color between magenta and cyan */
 
-            else if (blue == max)
+            else if (scaled_blue == max)
             {
                 hue = 4 + green - red;
                 G_debug(2, "Hue (green - red): %f", hue);
