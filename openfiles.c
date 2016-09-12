@@ -4,29 +4,23 @@
 #include <grass/glocale.h>
 #include "globals.h"
 
-
-void openfiles(char *r_name, char *g_name, char *b_name,
-	       char *h_name, char *i_name, char *s_name,
-	       /* int fd_input[3], int fd_output[3], CELL * rowbuf[3]) */
-	       int fd_input[3], int fd_output[3], DCELL * rowbuf[3])
+void openfiles(char *red, char *green, char *blue,
+               char *hue, char *intensity, char *saturation,
+               int fd_input[3], int fd_output[3],
+               DCELL *rowbuffer[3])
 {
-    fd_input[0] = Rast_open_old(r_name, "");
-    fd_input[1] = Rast_open_old(g_name, "");
-    fd_input[2] = Rast_open_old(b_name, "");
+    /* input file descriptors */
+    fd_input[0] = Rast_open_old(red, "");
+    fd_input[1] = Rast_open_old(green, "");
+    fd_input[2] = Rast_open_old(blue, "");
 
     /* open output files */
-    /* fd_output[0] = Rast_open_c_new(h_name); */
-    fd_output[0] = Rast_open_fp_new(h_name);
-    /* fd_output[1] = Rast_open_c_new(i_name); */
-    fd_output[1] = Rast_open_fp_new(i_name);
-    /* fd_output[2] = Rast_open_c_new(s_name); */
-    fd_output[2] = Rast_open_fp_new(s_name);
+    fd_output[0] = Rast_open_fp_new(hue);
+    fd_output[1] = Rast_open_fp_new(intensity);
+    fd_output[2] = Rast_open_fp_new(saturation);
 
     /* allocate the cell row buffer */
-    /* rowbuf[0] = Rast_allocate_c_buf(); */
-    rowbuf[0] = Rast_allocate_d_buf();
-    /* rowbuf[1] = Rast_allocate_c_buf(); */
-    rowbuf[1] = Rast_allocate_d_buf();
-    /* rowbuf[2] = Rast_allocate_c_buf(); */
-    rowbuf[2] = Rast_allocate_d_buf();
+    rowbuffer[0] = Rast_allocate_d_buf();
+    rowbuffer[1] = Rast_allocate_d_buf();
+    rowbuffer[2] = Rast_allocate_d_buf();
 }

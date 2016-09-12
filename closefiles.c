@@ -4,68 +4,57 @@
 #include "globals.h"
 
 /* This routine closes up the cell maps, frees up the row buffers and
-   use a less than perfect way of setting the color maps for the output
+   uses a less than perfect way of setting the color maps for the output
    to grey scale.  */
 
-int closefiles(char *h_name, char *i_name, char *s_name,
-	       /* int fd_output[3], CELL * rowbuf[3]) */
-	       int fd_output[3], DCELL * rowbuf[3])
+int closefiles(char *hue, char *intensity, char *saturation,
+	       int fd_output[3], DCELL * rowbuffer[3])
 {
-    int i;
+    unsigned int property;  // color space properties: hue, intensity, saturation
     struct Colors colors;
-    /* struct Range range; */
     struct FPRange range;
     struct History history;
-    /* CELL min, max; */
     DCELL min, max;
     const char *mapset;
 
-    for (i = 0; i < 3; i++) {
-	Rast_close(fd_output[i]);
-	G_free(rowbuf[i]);
+    for (property = 0; property < 3; property++) {
+        Rast_close(fd_output[i]);
+        G_free(rowbuffer[i]);
     }
 
     mapset = G_mapset();
 
     /* write colors */
-    /*   set to 0,max_level instead of min,max ?? */
-    /* Rast_read_range(h_name, mapset, &range); */
-    Rast_read_fp_range(h_name, mapset, &range);
-    /* Rast_get_range_min_max(&range, &min, &max); */
+    Rast_read_fp_range(hue, mapset, &range);
     Rast_get_fp_range_min_max(&range, &min, &max);
-    Rast_make_grey_scale_colors(&colors, min, max);
-    Rast_write_colors(h_name, mapset, &colors);
+    Rast_make_grey_scale_colors(&colors, min, max); // set to [0,max] instead ?
+    Rast_write_colors(hue, mapset, &colors);
 
-    /* Rast_read_range(i_name, mapset, &range); */
-    Rast_read_fp_range(i_name, mapset, &range);
-    /* Rast_get_range_min_max(&range, &min, &max); */
+    Rast_read_fp_range(intensity, mapset, &range);
     Rast_get_fp_range_min_max(&range, &min, &max);
     Rast_make_grey_scale_colors(&colors, min, max);
-    Rast_write_colors(i_name, mapset, &colors);
+    Rast_write_colors(intensity, mapset, &colors);
 
-    /* Rast_read_range(s_name, mapset, &range); */
-    Rast_read_fp_range(s_name, mapset, &range);
-    /* Rast_get_range_min_max(&range, &min, &max); */
+    Rast_read_fp_range(saturation, mapset, &range);
     Rast_get_fp_range_min_max(&range, &min, &max);
     Rast_make_grey_scale_colors(&colors, min, max);
-    Rast_write_colors(s_name, mapset, &colors);
+    Rast_write_colors(saturation, mapset, &colors);
 
     /* write metadata */
-    Rast_short_history(h_name, "raster", &history);
+    Rast_short_history(hue, "raster", &history);
     Rast_command_history(&history);
-    Rast_write_history(h_name, &history);
-    Rast_put_cell_title(h_name, "Image hue");
+    Rast_write_history(hue, &history);
+    Rast_put_cell_title(hue, "Image hue");
 
-    Rast_short_history(i_name, "raster", &history);
+    Rast_short_history(intensity, "raster", &history);
     Rast_command_history(&history);
-    Rast_write_history(i_name, &history);
-    Rast_put_cell_title(i_name, "Image intensity");
+    Rast_write_history(intensity, &history);
+    Rast_put_cell_title(intensity, "Image intensity");
 
-    Rast_short_history(s_name, "raster", &history);
+    Rast_short_history(saturation, "raster", &history);
     Rast_command_history(&history);
-    Rast_write_history(s_name, &history);
-    Rast_put_cell_title(s_name, "Image saturation");
+    Rast_write_history(saturation, &history);
+    Rast_put_cell_title(saturation, "Image saturation");
 
     return 0;
 }
-
