@@ -8,7 +8,9 @@
    to grey scale.  */
 
 int closefiles(char *hue, char *intensity, char *saturation,
-	       int fd_output[3], DCELL * rowbuffer[3])
+               int fd_output[3],
+               DCELL * rowbuffer[3])
+
 {
     unsigned int property;  // color properties: hue, intensity, saturation
     struct Colors colors;
@@ -17,7 +19,8 @@ int closefiles(char *hue, char *intensity, char *saturation,
     DCELL min, max;
     const char *mapset;
 
-    for (property = 0; property < 3; property++) {
+    for (property = 0; property < 3; property++)
+    {
         Rast_close(fd_output[property]);
         G_free(rowbuffer[property]);
     }

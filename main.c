@@ -1,20 +1,22 @@
 
 /****************************************************************************
  *
- * MODULE:       i.rgb.his
+ * MODULE:      i.rgb.his
  *
- * AUTHOR(S):    David Satnik, GIS Laboratory, Central Washington University
- *               with acknowledgements to Ali Vali,
- *               Univ. of Texas Space Research Center, for the core routine.
+ * AUTHOR(S):   David Satnik, GIS Laboratory, Central Washington University
+ *              Nikos Alexandris, support various bit depths
  *
- * PURPOSE:      Red-green-blue (rgb) to hue-intensity-saturation (his)
- *               raster map color transformation function
+ *              with acknowledgements to Ali Vali,
+ *              Univ. of Texas Space Research Center, for the core routine.
  *
- * COPYRIGHT:    (C) 2007-2008 by the GRASS Development Team
+ * PURPOSE:     Red-green-blue (rgb) to hue-intensity-saturation (his)
+ *              raster map color transformation function
  *
- *               This program is free software under the GNU General Public
- *               License (>=v2). Read the file COPYING that comes with GRASS
- *               for details.
+ * COPYRIGHT:   (C) 2007-2016 by the GRASS Development Team
+ *
+ *              This program is free software under the GNU General Public
+ *              License (>=v2). Read the file COPYING that comes with GRASS
+ *              for details.
  *
  *****************************************************************************/
 

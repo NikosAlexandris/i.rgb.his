@@ -1,17 +1,15 @@
 
 /******************************************************************************
 
-NAME:       RGB2HIS
+NAME:       RGB to HIS
  
-PURPOSE     To process red,green,blue bands to hue,intensity,saturation.
+PURPOSE     To process red, green, blue bands to hue, intensity, saturation.
  
-ALGORITHM:
-            Get red, green, blue from input buffer
+ALGORITHM:  Get red, green, blue from input buffer
             Create the HIS bands
             Write to output buffer
  
-ASSUMPTION:
-            The input images are read to the input buffer.
+ASSUMPTION: The input images are read to the input buffer.
 
 NOTE:       For GRASS one row from each cell map is passed in and each cell in
             each band is processed and written out.   CWU GIS Lab: DBS 8/90
