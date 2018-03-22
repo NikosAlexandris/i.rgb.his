@@ -16,9 +16,11 @@ int closefiles(char *hue, char *intensity, char *saturation,
     struct Colors colors;
     struct FPRange range;
     struct History history;
-    DCELL min, max;
+    double min;
+    double max;
     const char *mapset;
 
+    /* free allocated memory, close raster maps */
     for (property = 0; property < 3; property++)
     {
         Rast_close(fd_output[property]);
@@ -48,6 +50,7 @@ int closefiles(char *hue, char *intensity, char *saturation,
     Rast_command_history(&history);
     Rast_write_history(hue, &history);
     Rast_put_cell_title(hue, "Image hue");
+    Rast_write_units(hue, "degrees");
 
     Rast_short_history(intensity, "raster", &history);
     Rast_command_history(&history);
