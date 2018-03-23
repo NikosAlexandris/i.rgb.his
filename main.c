@@ -4,12 +4,12 @@
  * MODULE:      i.rgb.his
  *
  * AUTHOR(S):   David Satnik, GIS Laboratory, Central Washington University
- *              Nikos Alexandris, support various bit depths
+ *              Nikos Alexandris, support for user defined image bit depth
  *
  *              with acknowledgements to Ali Vali,
  *              Univ. of Texas Space Research Center, for the core routine.
  *
- * PURPOSE:     Red-green-blue (rgb) to hue-intensity-saturation (his)
+ * PURPOSE:     Red-Green-Blue (rgb) to Hue-Intensity-Saturation (his)
  *              raster map color transformation function
  *
  * COPYRIGHT:   (C) 2007-2016 by the GRASS Development Team
